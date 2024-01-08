@@ -18,6 +18,10 @@ namespace ReRenderingOptions
     using System.Collections.Generic;
 
     using UnityEngine.Scripting;
+    using Game.Rendering;
+    using Unity.Entities;
+    using ReRenderingOptions.Exporter;
+    using Game.UI;
 
 
 
@@ -32,6 +36,7 @@ namespace ReRenderingOptions
         public float LowestValueSet = 0.001f;
         public float HighestValueSet = 5f;
         public static float Fraction = 1f;
+
      
  
    
@@ -125,31 +130,35 @@ namespace ReRenderingOptions
         public float terrainPixelError { get; set; }
 
 
+       
+        [SettingsUISection("Advanced")]
+        [SettingsUISlider(min = 0.1f, max = 100f, step = 1f, unit = "percentage", scalarMultiplier = 100f)]
+        public float levelOfDetail { get; set; }
 
+        [SettingsUIAdvanced]
+        [SettingsUISection("Advanced")]
+        public bool lodCrossFade { get; set; }
 
+        [SettingsUIAdvanced]
+        [SettingsUISlider(min = 0f, max = 16384f, step = 256f, unit = "integer")]
+        public int maxLightCount { get; set; }
 
-        public override void Apply()
-        {
-            base.Apply();
-            GlobalVariables.GlobalQualityLevel = Convert.ToInt32(GlobalQuality);
-            GlobalVariables.globalTextureMipmapLimit = Convert.ToInt32(globalTextureMipmapLimit);
-            GlobalVariables.shadowDistance = Convert.ToInt32(ShadowDistance);
-            GlobalVariables.shadowCascades = Convert.ToInt32(ShadowCascades);
-            GlobalVariables.shadowNearPlaneOffset = Convert.ToInt32(shadowNearPlaneOffset);
-            GlobalVariables.realtimeReflectionProbes = realtimeReflectionProbes;
-            GlobalVariables.billboardsFaceCameraPosition = billboardsFaceCameraPosition;
-            GlobalVariables.asyncUploadTimeSlice = Convert.ToInt32(asyncUploadTimeSlice);
-            GlobalVariables.asyncUploadBufferSize = Convert.ToInt32(asyncUploadBufferSize);
-            GlobalVariables.terrainDetailDensityScale = Convert.ToInt32(terrainDetailDensityScale);
-            GlobalVariables.terrainPixelError = Convert.ToInt32(terrainPixelError);
+        [SettingsUIAdvanced]
+        [SettingsUISlider(min = 64f, max = 4096f, step = 64f, unit = "dataMegabytes")]
+        public int meshMemoryBudget { get; set; }
 
+        [SettingsUIAdvanced]
+        [SettingsUISection("Advanced")]
+        public bool strictMeshMemory { get; set; }
 
+        [SettingsUIAdvanced]
+        [SettingsUISlider(min = -50f, max = 5f, step = 1f, unit = "integer")]
+        public int finalTessellation { get; set; }
 
-          
+        [SettingsUIAdvanced]
+        [SettingsUISlider(min = -50f, max = 64f, step = 1f, unit = "integer")]
+        public int targetPatchSize { get; set; }
 
-
-        }
-     
 
         /// <summary>
         /// Sets a value indicating whether the mod's settings should be reset.
@@ -190,6 +199,44 @@ namespace ReRenderingOptions
 
 
         }
+
+
+        public override void Apply()
+        {
+            base.Apply();
+
+            RenderingSystem renderingSystem = World.DefaultGameObjectInjectionWorld?.GetExistingSystemManaged<RenderingSystem>();
+            renderingSystem.levelOfDetail = levelOfDetail;
+            renderingSystem.lodCrossFade = lodCrossFade;
+            renderingSystem.maxLightCount = maxLightCount;
+
+
+            BatchMeshSystem batchMeshSystem = World.DefaultGameObjectInjectionWorld?.GetExistingSystemManaged<BatchMeshSystem>();
+            if (batchMeshSystem != null)
+            {
+                batchMeshSystem.memoryBudget = (ulong)meshMemoryBudget * 1048576uL;
+                batchMeshSystem.strictMemoryBudget = strictMeshMemory;
+            }
+
+            GlobalVariables.GlobalQualityLevel = Convert.ToInt32(GlobalQuality);
+            GlobalVariables.globalTextureMipmapLimit = Convert.ToInt32(globalTextureMipmapLimit);
+            GlobalVariables.shadowDistance = Convert.ToInt32(ShadowDistance);
+            GlobalVariables.shadowCascades = Convert.ToInt32(ShadowCascades);
+            GlobalVariables.shadowNearPlaneOffset = Convert.ToInt32(shadowNearPlaneOffset);
+            GlobalVariables.realtimeReflectionProbes = realtimeReflectionProbes;
+            GlobalVariables.billboardsFaceCameraPosition = billboardsFaceCameraPosition;
+            GlobalVariables.asyncUploadTimeSlice = Convert.ToInt32(asyncUploadTimeSlice);
+            GlobalVariables.asyncUploadBufferSize = Convert.ToInt32(asyncUploadBufferSize);
+            GlobalVariables.terrainDetailDensityScale = Convert.ToInt32(terrainDetailDensityScale);
+            GlobalVariables.terrainPixelError = Convert.ToInt32(terrainPixelError);
+            SettingsExporter.ExportSettings(); // This exports the settings to a file
+
+            
+
+
+
+        }
+       
 
         /// <summary>
         /// Enables Unlock All as the default option and that no options are duplicated.

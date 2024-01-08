@@ -9,6 +9,7 @@
     using UnityEngine.Rendering.HighDefinition;
     using UnityEngine.Rendering;
     using ReRenderingOptions;
+    using System;
 
     public sealed class Mod : IMod
     {
@@ -43,6 +44,7 @@
             Localization.LoadTranslations(ActiveSettings, Log);
             updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.PreSimulation);
             updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.GameSimulation);
+            UnityEngine.Debug.Log("ReRenderingOptions exported settings located at:" + AppDomain.CurrentDomain.BaseDirectory);
 
         }
         /// <summary>

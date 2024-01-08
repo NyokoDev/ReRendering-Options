@@ -49,6 +49,7 @@ namespace ReRenderingOptions.Systems
             QualitySettings.terrainPixelError = GlobalVariables.terrainPixelError;
 
 
+
         }
         
     }

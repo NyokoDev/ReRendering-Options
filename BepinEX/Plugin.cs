@@ -24,7 +24,7 @@ namespace ReRenderingOptions
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
-        public const string GUID = "com.nyoko.DynamicResolutionExtended";
+        public const string GUID = "com.nyoko.rerenderingoptions";
 
         private Mod _mod;
  
@@ -35,7 +35,7 @@ namespace ReRenderingOptions
             _mod = new();
             _mod.OnLoad();
 
-            _mod.Log.Info("=======Dynamic Resolution Extended=======");
+            _mod.Log.Info("=======ReRenderingOptions=======");
             _mod.Log.Info("=======     Initialized   =======");
             _mod.Log.Info("=======                   =======");
 
