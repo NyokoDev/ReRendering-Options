@@ -23,13 +23,18 @@ namespace ReRenderingOptions.Systems
     public partial class ModeSystem : SystemBase
     {
 
+        /// <summary>
+        /// Update method.
+        /// </summary>
         protected override void OnUpdate()
         {
             ApplyGraphicsSettings();
 
         }
    
-
+        /// <summary>
+        /// Applies graphics settings in-game. Kind of not needed since we already do that on settings menu.
+        /// </summary>
         void ApplyGraphicsSettings()
         {
             QualitySettings.SetQualityLevel(GlobalVariables.GlobalQualityLevel, true); // Set to the lowest quality level

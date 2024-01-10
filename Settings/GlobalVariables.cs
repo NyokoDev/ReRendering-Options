@@ -1,13 +1,19 @@
-﻿using System;
+﻿using Game.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Entities;
 
 namespace ReRenderingOptions.Settings
 {
     internal class GlobalVariables
     {
+
+        /// <summary>
+        /// Quality properties to set.
+        /// </summary>
         public static int GlobalQualityLevel;
         public static int globalTextureMipmapLimit;
         public static int shadowDistance;
@@ -22,6 +28,15 @@ namespace ReRenderingOptions.Settings
         public static int terrainDetailDensityScale;
         public static int terrainPixelError;
 
-
+        /// <summary>
+        /// LevelofDetail field, returns 0 as default.
+        /// </summary>
+        public static float levelOfDetail
+        {
+            get;
+            set;
+        }
     }
 }
+        
+   

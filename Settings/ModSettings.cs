@@ -22,6 +22,7 @@ namespace ReRenderingOptions
     using Unity.Entities;
     using ReRenderingOptions.Exporter;
     using Game.UI;
+    using System.IO;
 
 
 
@@ -37,9 +38,14 @@ namespace ReRenderingOptions
         public float HighestValueSet = 5f;
         public static float Fraction = 1f;
 
-     
- 
-   
+        /// <summary>
+        /// Boolean to call after settings load.
+        /// </summary>
+        public bool Loaded;
+
+
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ModSettings"/> class.
         /// </summary>  
@@ -66,15 +72,16 @@ namespace ReRenderingOptions
                 {
 
                     GlobalVariables.GlobalQualityLevel = 0;
-                    
+
                 }
 
-                // Ensure state.
-                EnsureState();
+       
             }
         }
 
-    
+        /// <summary>
+        /// Several mod settings sliders.
+        /// </summary>
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
         [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
@@ -103,7 +110,7 @@ namespace ReRenderingOptions
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        public bool realtimeReflectionProbes{ get; set; }
+        public bool realtimeReflectionProbes { get; set; }
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
@@ -129,10 +136,8 @@ namespace ReRenderingOptions
         [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
         public float terrainPixelError { get; set; }
 
-
-       
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0.1f, max = 100f, step = 1f, unit = "percentage", scalarMultiplier = 100f)]
+        [SettingsUISlider(min = -50f, max = 100f, step = 1f, unit = "integer", scalarMultiplier = 100f)]
         public float levelOfDetail { get; set; }
 
         [SettingsUIAdvanced]
@@ -158,6 +163,8 @@ namespace ReRenderingOptions
         [SettingsUIAdvanced]
         [SettingsUISlider(min = -50f, max = 64f, step = 1f, unit = "integer")]
         public int targetPatchSize { get; set; }
+
+        // End of mod settings sliders.
 
 
         /// <summary>
@@ -200,7 +207,27 @@ namespace ReRenderingOptions
 
         }
 
+        /// <summary>
+        /// Sets settings after succesfully loading them from XML file.
+        /// </summary>
+        public void SetSettings()
+        {
+            GlobalQuality = GlobalVariables.GlobalQualityLevel;
+            globalTextureMipmapLimit = GlobalVariables.globalTextureMipmapLimit;
+            ShadowDistance = GlobalVariables.shadowDistance;
+            ShadowCascades = GlobalVariables.shadowCascades;
+            shadowNearPlaneOffset = GlobalVariables.shadowNearPlaneOffset;
+            realtimeReflectionProbes = GlobalVariables.realtimeReflectionProbes;
+            billboardsFaceCameraPosition = GlobalVariables.billboardsFaceCameraPosition;
+            asyncUploadTimeSlice = GlobalVariables.asyncUploadTimeSlice;
+            asyncUploadBufferSize = GlobalVariables.asyncUploadBufferSize;
+            terrainDetailDensityScale = GlobalVariables.terrainDetailDensityScale;
+            terrainPixelError = GlobalVariables.terrainPixelError;
+        }
 
+        /// <summary>
+        /// Override apply method to apply settings on setting change (Changing a slider will trigger it).
+        /// </summary>
         public override void Apply()
         {
             base.Apply();
@@ -217,7 +244,12 @@ namespace ReRenderingOptions
                 batchMeshSystem.memoryBudget = (ulong)meshMemoryBudget * 1048576uL;
                 batchMeshSystem.strictMemoryBudget = strictMeshMemory;
             }
+            string assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
+
+            string settingsFilePath = Path.Combine(assemblyDirectory, "RROSettings.xml");
+
+            if (Loaded) { 
             GlobalVariables.GlobalQualityLevel = Convert.ToInt32(GlobalQuality);
             GlobalVariables.globalTextureMipmapLimit = Convert.ToInt32(globalTextureMipmapLimit);
             GlobalVariables.shadowDistance = Convert.ToInt32(ShadowDistance);
@@ -229,25 +261,38 @@ namespace ReRenderingOptions
             GlobalVariables.asyncUploadBufferSize = Convert.ToInt32(asyncUploadBufferSize);
             GlobalVariables.terrainDetailDensityScale = Convert.ToInt32(terrainDetailDensityScale);
             GlobalVariables.terrainPixelError = Convert.ToInt32(terrainPixelError);
-            SettingsExporter.ExportSettings(); // This exports the settings to a file
+            GlobalVariables.levelOfDetail = levelOfDetail;
+            SettingsExporter.SaveGlobalVariablesToXml(settingsFilePath);
+           
 
-            
-
+            }
 
 
         }
-       
+
 
         /// <summary>
-        /// Enables Unlock All as the default option and that no options are duplicated.
+        /// Load method to load settings from XML file.
         /// </summary>
-        private void EnsureState()
+        public void Load()
         {
-         
+            string assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+
+            string settingsFilePath = Path.Combine(assemblyDirectory, "RROSettings.xml");
+            SettingsExporter.LoadGlobalVariablesFromXml(settingsFilePath);
+            Loaded = true;
+            SetSettings();
+
         }
 
-     
 
+       
+
+
+        /// <summary>
+        /// Pending implementation.
+        /// </summary>
         public class CacheValues
         {
             public static float CacheQualityLevel;

@@ -15,7 +15,7 @@ namespace ReRenderingOptions
     static class Initializer
     {
         /// <summary>
-        /// Called by the game when the mod is loaded.
+        /// Pending implementation.
         /// </summary>
         public static void OnLoad()
         {

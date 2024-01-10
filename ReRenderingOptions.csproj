@@ -5,7 +5,7 @@
     <AssemblyName>ReRenderingOptions</AssemblyName>
     <Description>ReRenderingOptions
 </Description>
-    <Version>1.1.1</Version>
+    <Version>1.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -172,4 +172,8 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Cities2_Data\Managed\XblPCSandbox.dll</HintPath>
     </Reference>
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;C:\Users\Nyoko\source\repos\ReRender Options\DynRes\DynamicResolutionExtended\bin\Release\net472\ReRenderingOptions.dll&quot; &quot;C:\Users\Nyoko\Documents\Cities Skylines II\ReRenderOptions&quot; /Y&#xD;&#xA;" />
+  </Target>
 </Project>

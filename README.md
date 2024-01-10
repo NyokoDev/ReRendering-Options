@@ -1,5 +1,5 @@
 # ReRendering options
-Hey guys here I am with another mod.
+More rendering options!
 
 Similar to Dynamic Resolution Extended, this mod also features a settings entry within the settings menu.
 
@@ -25,6 +25,12 @@ The other options are within the Advanced tab, to show them, click 'Show Advance
 ![Settings Menu](https://i.imgur.com/WV5sQDV.png)
 
 This mod has been labelled as TEST and it's obviously not the final release. 
+# NOTE
+With v1.2 you can now export/import your settings to share with others.
+
+Location is here:
+C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II. Find "ROSettings.xml"
+To import settings, simply replace that file with your file.
 
 
 I, Nyoko have constructed this code, drawing from Algernon's 529 Lites code as its foundation.
@@ -46,6 +52,10 @@ You're welcome to do push requests with compatibility improvements.
 # Consider supporting me!
 [![Donate](https://storage.ko-fi.com/cdn/brandasset/kofi_s_tag_dark.png)](https://ko-fi.com/devnyoko)
 
+
+
+Known issues:
+LevelOfDetail value might not always save correctly due to limitations and the value being clamped elsewhere (Being worked on).
 
 
 Hope you guys enjoy!

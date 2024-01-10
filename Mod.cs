@@ -39,13 +39,16 @@
         /// <param name="updateSystem">Game update system.</param>
         public void OnCreateWorld(UpdateSystem updateSystem)
         {
+            
+
             ActiveSettings = new(this);
             ActiveSettings.RegisterInOptionsUI();
             Localization.LoadTranslations(ActiveSettings, Log);
-            updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.PreSimulation);
-            updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.GameSimulation);
-            UnityEngine.Debug.Log("ReRenderingOptions exported settings located at:" + AppDomain.CurrentDomain.BaseDirectory);
-
+            updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.PreSimulation); // Update system.
+            updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.GameSimulation);// Update system.
+            UnityEngine.Debug.Log("ReRenderingOptions exported settings located at:" + AppDomain.CurrentDomain.BaseDirectory); // Exports mod settings to an additional file on load.
+            ActiveSettings.Load(); // Loads the settings to the settings menu from an XML file.
+           
         }
         /// <summary>
         /// Called by the game when the mod is disposed of.
