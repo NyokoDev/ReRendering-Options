@@ -20,7 +20,7 @@ using static UnityEngine.MonoBehaviour;
 
 namespace ReRenderingOptions
 {
-    [BepInPlugin(GUID, "ReRenderingOptions", "1.0")]
+    [BepInPlugin(GUID, "ReRenderingOptions", "1.3")]
     [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
@@ -35,9 +35,8 @@ namespace ReRenderingOptions
             _mod = new();
             _mod.OnLoad();
 
-            _mod.Log.Info("=======ReRenderingOptions=======");
-            _mod.Log.Info("=======     Initialized   =======");
-            _mod.Log.Info("=======                   =======");
+            _mod.Log.Info("ReRenderingOptions 1.3");
+            
 
             // Apply Harmony patches.
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), GUID);

@@ -84,28 +84,28 @@ namespace ReRenderingOptions
         /// </summary>
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float GlobalQuality { get; set; }
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float globalTextureMipmapLimit { get; set; }
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float ShadowDistance { get; set; }
 
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float ShadowCascades { get; set; }
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float shadowNearPlaneOffset { get; set; }
 
         [SettingsUIAdvanced]
@@ -118,26 +118,26 @@ namespace ReRenderingOptions
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float asyncUploadTimeSlice { get; set; }
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float asyncUploadBufferSize { get; set; }
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float terrainDetailDensityScale { get; set; }
 
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 100f)]
+        [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
         public float terrainPixelError { get; set; }
 
         [SettingsUISection("Advanced")]
-        [SettingsUISlider(min = -50f, max = 100f, step = 1f, unit = "integer", scalarMultiplier = 100f)]
+        [SettingsUISlider(min = -50f, max = 100f, step = 1f, unit = "integer", scalarMultiplier = 1f)]
         public float levelOfDetail { get; set; }
 
         [SettingsUIAdvanced]
@@ -244,10 +244,13 @@ namespace ReRenderingOptions
                 batchMeshSystem.memoryBudget = (ulong)meshMemoryBudget * 1048576uL;
                 batchMeshSystem.strictMemoryBudget = strictMeshMemory;
             }
-            string assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-
+            string localLowDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            localLowDirectory = Path.Combine(localLowDirectory, "..", "LocalLow");
+            string assemblyDirectory = Path.Combine(localLowDirectory, "Colossal Order", "Cities Skylines II", "Mods", "ReRenderingOptions");
             string settingsFilePath = Path.Combine(assemblyDirectory, "RROSettings.xml");
+
+            Directory.CreateDirectory(assemblyDirectory);
 
             if (Loaded) { 
             GlobalVariables.GlobalQualityLevel = Convert.ToInt32(GlobalQuality);
@@ -276,7 +279,9 @@ namespace ReRenderingOptions
         /// </summary>
         public void Load()
         {
-            string assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string localLowDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            localLowDirectory = Path.Combine(localLowDirectory, "..", "LocalLow");
+            string assemblyDirectory = Path.Combine(localLowDirectory, "Colossal Order", "Cities Skylines II", "Mods", "ReRenderingOptions");
 
 
             string settingsFilePath = Path.Combine(assemblyDirectory, "RROSettings.xml");

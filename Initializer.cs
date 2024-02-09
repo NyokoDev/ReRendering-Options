@@ -21,6 +21,25 @@ namespace ReRenderingOptions
         {
 
         }
+        public static class ConsoleColors
+        {
+            public static void WriteColored(string message, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+            {
+                Console.ForegroundColor = foregroundColor;
+                Console.BackgroundColor = backgroundColor;
+                Console.Write(message);
+                Console.ResetColor();
+            }
+
+            public static void WriteLineColored(string message, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+            {
+                Console.ForegroundColor = foregroundColor;
+                Console.BackgroundColor = backgroundColor;
+                Console.WriteLine(message);
+                Console.ResetColor();
+            }
+        }
+
 
         public static void OnInitialized()
         {

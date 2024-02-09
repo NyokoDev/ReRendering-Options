@@ -5,7 +5,7 @@
     <AssemblyName>ReRenderingOptions</AssemblyName>
     <Description>ReRenderingOptions
 </Description>
-    <Version>1.2</Version>
+    <Version>1.3</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -174,6 +174,6 @@
   </ItemGroup>
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;C:\Users\Nyoko\source\repos\ReRender Options\DynRes\DynamicResolutionExtended\bin\Release\net472\ReRenderingOptions.dll&quot; &quot;C:\Users\Nyoko\Documents\Cities Skylines II\ReRenderOptions&quot; /Y&#xD;&#xA;" />
+    <Exec Command="xcopy &quot;C:\Users\Nyoko\source\repos\RRO\ReRendering-Options\bin\Release\net472\ReRenderingOptions.dll&quot; &quot;C:\Users\Nyoko\Documents\Cities Skylines II\ReRenderOptions&quot; /Y&#xD;&#xA;" />
   </Target>
 </Project>

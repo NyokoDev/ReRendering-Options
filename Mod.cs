@@ -10,6 +10,7 @@
     using UnityEngine.Rendering;
     using ReRenderingOptions;
     using System;
+    using System.IO;
 
     public sealed class Mod : IMod
     {
@@ -46,7 +47,18 @@
             Localization.LoadTranslations(ActiveSettings, Log);
             updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.PreSimulation); // Update system.
             updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.GameSimulation);// Update system.
-            UnityEngine.Debug.Log("ReRenderingOptions exported settings located at:" + AppDomain.CurrentDomain.BaseDirectory); // Exports mod settings to an additional file on load.
+            string localLowDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            localLowDirectory = Path.Combine(localLowDirectory, "..", "LocalLow");
+            string assemblyDirectory = Path.Combine(localLowDirectory, "Colossal Order", "Cities Skylines II", "Mods", "ReRenderingOptions");
+            string settingsFilePath = Path.Combine(assemblyDirectory, "RROSettings.xml");
+
+            Console.WriteLine("ReRenderingOptions 1.3", ConsoleColor.Blue, ConsoleColor.Blue);
+            Console.WriteLine("Support: https://discord.gg/5gZgRNm29e", ConsoleColor.Blue, ConsoleColor.Blue);
+            Console.WriteLine("Donate: https://shorturl.at/hmpCW", ConsoleColor.Blue, ConsoleColor.Blue);
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(" ────────────────────────────────── ");
+            Console.ResetColor();
+            UnityEngine.Debug.Log("ReRenderingOptions exported settings located at:" + settingsFilePath.ToString()); // Lets the user know where to find the file.
             ActiveSettings.Load(); // Loads the settings to the settings menu from an XML file.
            
         }
