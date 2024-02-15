@@ -27,6 +27,7 @@ namespace ReRenderingOptions.Settings
         public static int asyncUploadBufferSize;
         public static int terrainDetailDensityScale;
         public static int terrainPixelError;
+        public static float DynamicResolution;
 
         /// <summary>
         /// LevelofDetail field, returns 0 as default.

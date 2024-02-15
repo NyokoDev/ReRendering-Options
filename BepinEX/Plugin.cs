@@ -13,6 +13,8 @@ using Game.SceneFlow;
 using Game.UI.InGame;
 using HarmonyLib;
 using static UnityEngine.MonoBehaviour;
+using Lumina;
+using MonoMod.RuntimeDetour;
 
 #if BEPINEX_V6
     using BepInEx.Unity.Mono;
@@ -25,6 +27,8 @@ namespace ReRenderingOptions
     public class Plugin : BaseUnityPlugin
     {
         public const string GUID = "com.nyoko.rerenderingoptions";
+
+
 
         private Mod _mod;
  
@@ -40,6 +44,9 @@ namespace ReRenderingOptions
 
             // Apply Harmony patches.
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), GUID);
+
+            
+
         }
 
         /// <summary>

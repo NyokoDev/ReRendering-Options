@@ -11,6 +11,9 @@
     using ReRenderingOptions;
     using System;
     using System.IO;
+    using Lumina;
+    using MonoMod.RuntimeDetour;
+    using UnityEngine;
 
     public sealed class Mod : IMod
     {
@@ -29,6 +32,8 @@
             Log.Info("loading");
         }
 
+
+
         /// <summary>
         /// Gets the mod's active settings configuration.
         /// </summary>
@@ -40,13 +45,14 @@
         /// <param name="updateSystem">Game update system.</param>
         public void OnCreateWorld(UpdateSystem updateSystem)
         {
-            
 
+
+            Console.WriteLine("Current value: " + ModSettings.DynamicResolutionCache);
             ActiveSettings = new(this);
             ActiveSettings.RegisterInOptionsUI();
             Localization.LoadTranslations(ActiveSettings, Log);
-            updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.PreSimulation); // Update system.
             updateSystem.UpdateAfter<ModeSystem>(SystemUpdatePhase.GameSimulation);// Update system.
+            updateSystem.UpdateAfter<EnablerSystem>(SystemUpdatePhase.CompleteRendering);// Update system.
             string localLowDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             localLowDirectory = Path.Combine(localLowDirectory, "..", "LocalLow");
             string assemblyDirectory = Path.Combine(localLowDirectory, "Colossal Order", "Cities Skylines II", "Mods", "ReRenderingOptions");
@@ -60,7 +66,8 @@
             Console.ResetColor();
             UnityEngine.Debug.Log("ReRenderingOptions exported settings located at:" + settingsFilePath.ToString()); // Lets the user know where to find the file.
             ActiveSettings.Load(); // Loads the settings to the settings menu from an XML file.
-           
+            
+
         }
         /// <summary>
         /// Called by the game when the mod is disposed of.

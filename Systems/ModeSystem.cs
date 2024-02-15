@@ -17,18 +17,47 @@ using UnityEngine;
 
 using Game.Rendering.Utilities;
 using ReRenderingOptions.Settings;
+using Lumina;
+using MonoMod.RuntimeDetour;
+using Game.Net;
 // The entirety of this code stands as the creation of Nyoko. Any attempt to redistribute or share this code without explicit authorization is strictly prohibited.
 namespace ReRenderingOptions.Systems
 {
     public partial class ModeSystem : SystemBase
     {
+        public static CameraHook hook = null;
+
+        ModSettings ModSettings;
+
+        public static bool Ready = false;
+        
+        /// <summary>
+        /// Initializes the Dynamic Resolution method.
+        /// </summary>
+        public static void Initialize() { 
+        var cameraController = GameObject.FindObjectOfType<CameraController>();
+            if (cameraController != null)
+            {
+                hook = cameraController.gameObject.AddComponent<CameraHook>();
+               
+ 
+                Ready = true;
+                UnityEngine.Debug.Log("Added the 2 game objects.");
+            }
+            else
+            {
+                UnityEngine.Debug.LogError("CameraController not found!");
+            }
+        }
 
         /// <summary>
         /// Update method.
         /// </summary>
+        ///
         protected override void OnUpdate()
         {
             ApplyGraphicsSettings();
+           
 
         }
    
@@ -52,6 +81,10 @@ namespace ReRenderingOptions.Systems
             QualitySettings.asyncUploadBufferSize = GlobalVariables.asyncUploadBufferSize; // Set async upload buffer size
             QualitySettings.terrainDetailDensityScale = GlobalVariables.terrainDetailDensityScale;
             QualitySettings.terrainPixelError = GlobalVariables.terrainPixelError;
+
+           
+            CameraRenderer.Update();
+
 
 
 

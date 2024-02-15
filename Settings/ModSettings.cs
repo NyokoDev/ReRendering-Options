@@ -23,6 +23,7 @@ namespace ReRenderingOptions
     using ReRenderingOptions.Exporter;
     using Game.UI;
     using System.IO;
+    using Lumina;
 
 
 
@@ -42,7 +43,6 @@ namespace ReRenderingOptions
         /// Boolean to call after settings load.
         /// </summary>
         public bool Loaded;
-
 
 
 
@@ -82,6 +82,16 @@ namespace ReRenderingOptions
         /// <summary>
         /// Several mod settings sliders.
         /// </summary>
+        /// 
+
+        [SettingsUIAdvanced]
+        [SettingsUISection("Advanced")]
+        [SettingsUISlider(min = 0.25f, max = 5f, step = 0.01f, unit = "integer", scaleDragVolume = true, scalarMultiplier = 1f)]
+        public float DynamicResolution { get; set; }
+
+
+        public static float DynamicResolutionCache;
+
         [SettingsUIAdvanced]
         [SettingsUISection("Advanced")]
         [SettingsUISlider(min = 0f, max = 100f, step = 1f, unit = "percentage", scaleDragVolume = true, scalarMultiplier = 1f)]
@@ -252,21 +262,27 @@ namespace ReRenderingOptions
 
             Directory.CreateDirectory(assemblyDirectory);
 
-            if (Loaded) { 
-            GlobalVariables.GlobalQualityLevel = Convert.ToInt32(GlobalQuality);
-            GlobalVariables.globalTextureMipmapLimit = Convert.ToInt32(globalTextureMipmapLimit);
-            GlobalVariables.shadowDistance = Convert.ToInt32(ShadowDistance);
-            GlobalVariables.shadowCascades = Convert.ToInt32(ShadowCascades);
-            GlobalVariables.shadowNearPlaneOffset = Convert.ToInt32(shadowNearPlaneOffset);
-            GlobalVariables.realtimeReflectionProbes = realtimeReflectionProbes;
-            GlobalVariables.billboardsFaceCameraPosition = billboardsFaceCameraPosition;
-            GlobalVariables.asyncUploadTimeSlice = Convert.ToInt32(asyncUploadTimeSlice);
-            GlobalVariables.asyncUploadBufferSize = Convert.ToInt32(asyncUploadBufferSize);
-            GlobalVariables.terrainDetailDensityScale = Convert.ToInt32(terrainDetailDensityScale);
-            GlobalVariables.terrainPixelError = Convert.ToInt32(terrainPixelError);
-            GlobalVariables.levelOfDetail = levelOfDetail;
-            SettingsExporter.SaveGlobalVariablesToXml(settingsFilePath);
-           
+            if (Loaded) {
+                GlobalVariables.GlobalQualityLevel = Convert.ToInt32(GlobalQuality);
+                GlobalVariables.globalTextureMipmapLimit = Convert.ToInt32(globalTextureMipmapLimit);
+                GlobalVariables.shadowDistance = Convert.ToInt32(ShadowDistance);
+                GlobalVariables.shadowCascades = Convert.ToInt32(ShadowCascades);
+                GlobalVariables.shadowNearPlaneOffset = Convert.ToInt32(shadowNearPlaneOffset);
+                GlobalVariables.realtimeReflectionProbes = realtimeReflectionProbes;
+                GlobalVariables.billboardsFaceCameraPosition = billboardsFaceCameraPosition;
+                GlobalVariables.asyncUploadTimeSlice = Convert.ToInt32(asyncUploadTimeSlice);
+                GlobalVariables.asyncUploadBufferSize = Convert.ToInt32(asyncUploadBufferSize);
+                GlobalVariables.terrainDetailDensityScale = Convert.ToInt32(terrainDetailDensityScale);
+                GlobalVariables.terrainPixelError = Convert.ToInt32(terrainPixelError);
+                GlobalVariables.levelOfDetail = levelOfDetail;
+                SettingsExporter.SaveGlobalVariablesToXml(settingsFilePath);
+                CameraHook.currentSSAAFactor = DynamicResolution;
+
+                DynamicResolutionCache = DynamicResolution;
+                Console.WriteLine(DynamicResolutionCache);
+                CameraHook.instance.SetSSAAFactor(DynamicResolution, true);
+
+
 
             }
 
@@ -293,7 +309,6 @@ namespace ReRenderingOptions
 
 
        
-
 
         /// <summary>
         /// Pending implementation.
